@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous"></link>
+    <style>body{margin:5%;}</style>
+</head>
+<body>
+  <h1>Create an array of months / quarters</h1>
+  <br/>
+  <hr/>
+  <br/>
+  <div><label>Select Frequency</label><br/>
+  <label class="custom-control custom-radio">
+    <input id="month" name="radio" type="radio"
+	   class="custom-control-input" checked="checked">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">Month</span>
+  </label>
+  <label class="custom-control custom-radio">
+      <input id="quarter" name="radio" type="radio" class="custom-control-input">
+	<span class="custom-control-indicator"></span>
+	<span class="custom-control-description">Quarter</span>
+  </label>
+</div><br/>
+  <div class="form-group">
+    <label>Start Date</label>
+    <input class="form-control" id="startDate" name="startDate" placeholder="1990m1"></input>
+  </div>
+  <div class="form-group">
+    <label>end Date</label>
+    <input class="form-control" id="endDate" name="endDate" placeholder="2010m12"></input>
+  </div>
+  <div class="form-group">
+    <label class="form-check-label">
+      <input class="form-check-input" type="checkbox" id="upperCase" value="option1"> Upper Case
+    </label>
+  </div>
+  <button class="btn btn-danger" onclick="createArray()">Get Dates !</button>
+  <br/>
+  <hr/>
+  <br/>
+  <table id="table">
+  </table>
+  <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/js/bootstrap.min.js" integrity="sha384-VjEeINv9OSwtWFLAtmc4JCtEJXXBub00gtSnszmspDLCtC0I4z4nqz7rEFbIZLLU" crossorigin="anonymous"></script>
+  
+  <script>
+    $("#month").on('click',function(){
+    $("#startDate").attr("placeholder","1990m1");
+    $("#endDate").attr("placeholder","2010m12");
+    });
+    $("#quarter").on('click',function(){
+    $("#startDate").attr("placeholder","1990q1");
+    $("#endDate").attr("placeholder","2010q4");
+    });
+    function createArray() {
+    var table = document.getElementById("table");
+    while (table.firstChild) {
+    table.removeChild(table.firstChild);
+    }
+    if (document.getElementById('month').checked) {
+      var text = "m";
+      var limite = 13;
+      var textForIndex = text.toUpperCase();
+    } else {
+       var text = "q";
+       var limite = 5;
+       var textForIndex = text.toUpperCase();
+    }
+    if (document.getElementById('upperCase').checked) {
+      text = text.toUpperCase();
+    }
+    var startDate = document.getElementById('startDate').value.toUpperCase();
+    var endDate = document.getElementById('endDate').value.toUpperCase();
+    var yStart = parseInt(startDate.substring(0,startDate.toUpperCase().indexOf(textForIndex)));
+    var yEnd = parseInt(endDate.substring(0,endDate.toUpperCase().indexOf(textForIndex)));
+    var qStart = parseInt(startDate.substring(startDate.indexOf(textForIndex)+1,startDate.length+1));
+    var qEnd = parseInt(endDate.substring(endDate.indexOf(textForIndex)+1,endDate.length+1));
+    for (var q=qStart; q<limite; q++){
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var text1 = yStart + text + q.toString();
+        td1.appendChild(document.createTextNode(text1));
+        tr.appendChild(td1);
+        table.appendChild(tr);
+     }
+    for (var y=yStart+1; y<yEnd; y++){
+        for (var q=1; q<limite; q++){
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            var text1 = y + text + q.toString();
+            td1.appendChild(document.createTextNode(text1));
+            tr.appendChild(td1);
+            table.appendChild(tr);
+        } 
+        }
+    for (var q=1; q<qEnd+1; q++){
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var text1 = yEnd + text + q.toString();
+        td1.appendChild(document.createTextNode(text1));
+        tr.appendChild(td1);
+        table.appendChild(tr);
+    }
+    }
+  </script>
+</body>
+</html>
